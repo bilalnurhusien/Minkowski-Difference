@@ -10,9 +10,9 @@ sudo apt-get install libsfml-dev
 Output: 
 	Minkowski sum
 	
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/MinkowskiSumPentagon.png)
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/output/MinkowskiSumPentagon.png)
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/MinkowskiSumSquareHexagon.png)
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/output/MinkowskiSumSquareHexagon.png)
 
 
 
