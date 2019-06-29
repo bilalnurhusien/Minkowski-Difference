@@ -15,9 +15,9 @@ Library Installation:
 Output: 
 	Minkowski sum
 	
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/output/MinkowskiSumPentagon.png)
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumPentagon.png)
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/output/MinkowskiSumSquareHexagon.png)
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumSquareHexagon.png)
 
 
 
