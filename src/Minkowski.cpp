@@ -11,9 +11,8 @@
 using namespace std;
 
 /**
- * Shortest distance (angular) between two angles.
- * It will be in range [0, 180].
- * This is either return the distance or 360 - distance
+ * Shortest distance between two angles. It will be in range [0, 180].
+ * This will either return the distance or 360 - distance
  */
 float Distance(float alpha, float beta) {
     float phi = fmod(fabs(beta - alpha),  360.f);
@@ -32,7 +31,7 @@ bool IsAngleBetween(float a, float b, float targetAngle)
     distanceAtoTarget = Distance(targetAngle, a);
     distanceBtoTarget = Distance(targetAngle, b);
 
-    return ((distanceAtoB < 180.0f) && ((distanceAtoTarget + distanceBtoTarget) <= distanceAtoB));
+    return ((distanceAtoTarget + distanceBtoTarget) <= distanceAtoB);
 }
 
 /**
