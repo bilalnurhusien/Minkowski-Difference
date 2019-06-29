@@ -9,7 +9,7 @@ void PrintHelp()
 {
     cout << "Usage:" << endl;
     cout << "\t./assign1 <num-of-polygon1-verticies> <num-of-polygon2-verticies>" << endl;
-    cout << "Example:\n\t./assign1 6 5 # For a square and a pentagon" << endl;
+    cout << "Example:\n\t./assign1 6 5 # For a hexagon and a pentagon" << endl;
     
 }
 
