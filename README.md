@@ -1,4 +1,6 @@
-Usage
+
+Usage:
+	
 	$ ./assign1 <num-of-polygon1-verticies> <num-of-polygon2-verticies>
 
 Example:
