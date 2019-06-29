@@ -79,8 +79,7 @@ int32_t main(int argc, char *argv[])
     sf::Font font;
     if (!font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMono.ttf"))
     {
-        cout << "Failed to load font" << endl;
-        return -1;
+        cout << "Warning: failed to load font" << endl;
     }
 
     text.setFont(font);

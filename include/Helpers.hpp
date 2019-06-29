@@ -3,6 +3,7 @@
 #include "Types.hpp"
 #include <sstream>
 #include <string>
+#include <fstream>
 
 /**
   * Print help messages
@@ -58,4 +59,3 @@ std::string ToStringSetPrecision(const T a_value, const int n = 4)
     out << std::fixed << a_value;
     return out.str();
 }
-
