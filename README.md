@@ -5,7 +5,8 @@ Usage:
 
 Example:
 
-	$ ./assign1 6 5 # For a hexagon and a pentagon
+	# For a hexagon and a pentagon
+	$ ./assign1 6 5 
 
 
 Library Installation:
