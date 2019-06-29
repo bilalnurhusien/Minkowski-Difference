@@ -1,0 +1,2 @@
+# MinkowskiSum
+Minkowski Sum implementation
