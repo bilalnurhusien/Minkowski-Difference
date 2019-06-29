@@ -3,10 +3,16 @@ Usage:
 Example:
 	./assign1 6 5 # For a square and a pentagon
 
-Output: 
-	Minkowski sum
-
 Library Installation:
 
 sudo apt-get install libsfml-dev
+
+Output: 
+	Minkowski sum
+	
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/MinkowskiSumPentagon.png)
+
+![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/MinkowskiSumSquareHexagon.png)
+
+
 
