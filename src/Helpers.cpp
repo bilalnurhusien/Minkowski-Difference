@@ -251,6 +251,3 @@ void MergeAngleOfNormalVectors(const vector<sf::CircleShape> vecShapes,
     
     sort(polygonEdges.begin(), polygonEdges.end(), PolygonEdge::CompAngles);
 }
-
-template<>
-std::string ToStringSetPrecision<float>(const float a_value, const int n );
