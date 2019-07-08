@@ -11,6 +11,8 @@
 #include <float.h>
 #include <algorithm>
 
+#define DEBUG
+
 /**
  * Const variables
  */

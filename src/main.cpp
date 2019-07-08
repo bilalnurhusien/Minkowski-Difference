@@ -55,7 +55,6 @@ int32_t main(int argc, char *argv[])
 
     for (uint32_t i = 0; i < minkowskiVertices.size(); ++i)
     {
-        
         cout << "Minkowski Vertex: " << minkowskiVertices[i].vertex.x << " " << minkowskiVertices[i].vertex.y << endl;
         cout << "Minkowski Angle: " << minkowskiVertices[i].normalAngle << endl;
         minkowskiShape.setPoint(i, minkowskiVertices[i].vertex);
