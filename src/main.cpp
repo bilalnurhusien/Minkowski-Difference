@@ -11,7 +11,8 @@ int32_t main(int argc, char *argv[])
     sf::RenderWindow window(sf::VideoMode(WindowSizeX, WindowSizeY), "Assignment 1 : Minkowski Difference");
 
     sf::ConvexShape minkowskiShape;
-    vector<sf::CircleShape> vecShapes;
+    vector<sf::CircleShape> polygonShapesVec;
+    vector<sf::ConvexShape> manualPolygonShapesVec;
     vector<vector<sf::Vertex> > normalVectors1;
     vector<vector<sf::Vertex> > inwardNormalVectors1;  
     vector<vector<sf::Vertex> > normalVectors2;
@@ -19,37 +20,89 @@ int32_t main(int argc, char *argv[])
     vector<float> angleOfInwardNormalVectors1;
     vector<float> angleOfNormalVectors2;
     vector<PolygonVertex> minkowskiVertices;
-    vector<PolygonVertex> polygonVertices;
+    vector<PolygonVertex> sortedPolygonVertices;
 
     /* Process arguments */
-    if (!ProcessArguments(argc, argv, vecShapes))
+    if (!ProcessArguments(argc, argv, polygonShapesVec, manualPolygonShapesVec))
     {
-        cout << "Failed to process arguments" << endl;
         return -1;
     }
 
-    /* Get normal vectors */
-    GetNormalVectors(vecShapes[0], OffSetX1, OffSetY1, sf::Color::Red, normalVectors1);
-    GetNormalVectors(vecShapes[0], OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectors1, false);
-    GetNormalVectors(vecShapes[1], OffSetX2, OffSetY2, sf::Color::Green, normalVectors2);
+    if (manualPolygonShapesVec.empty() &&
+        polygonShapesVec.empty())
+    {
+        cout << "Failed to create polygons" << endl;
+
+        return -1;
+    }
+
+    if ((!manualPolygonShapesVec.empty()) && 
+        (manualPolygonShapesVec.size() < 2))
+    {
+        cout << "Invalid input file" << endl;
+        return -1;
+    }
     
+#ifdef DEBUG
+    cout << "Manual " << manualPolygonShapesVec.size() << " Automatic " << polygonShapesVec.size() <<endl;
+    if (!manualPolygonShapesVec.empty())
+    {
+        for (uint32_t i = 0; i < manualPolygonShapesVec[0].getPointCount(); ++i)
+        {
+            sf::Vector2f vertex = manualPolygonShapesVec[0].getPoint(i);
+
+            cout << vertex.x << ", " << vertex.y << endl;
+        }
+
+        for (uint32_t i = 0; i < manualPolygonShapesVec[1].getPointCount(); ++i)
+        {
+            sf::Vector2f vertex = manualPolygonShapesVec[1].getPoint(i);
+
+            cout << vertex.x << ", " << vertex.y << endl;
+        }
+    }
+#endif
+
+    if (!polygonShapesVec.empty())
+    {
+        /* Get normal vectors */
+        GetNormalVectors(polygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Red, normalVectors1);
+        GetNormalVectors(polygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectors1, false);
+        GetNormalVectors(polygonShapesVec[1], OffSetX2, OffSetY2, sf::Color::Green, normalVectors2);
+    }
+    else
+    {
+        /* Get normal vectors */
+        GetNormalVectors(manualPolygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Red, normalVectors1);
+        GetNormalVectors(manualPolygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectors1, false);
+        GetNormalVectors(manualPolygonShapesVec[1], OffSetX2, OffSetY2, sf::Color::Green, normalVectors2);
+    }
+
     /* Get angle of normal vectors */
     GetAngleOfNormalVectors(normalVectors1, angleOfNormalVectors1);
     GetAngleOfNormalVectors(normalVectors2, angleOfNormalVectors2);
-    GetOppositeAngles(angleOfNormalVectors1, angleOfInwardNormalVectors1);  
-    MergeAngleOfNormalVectors(vecShapes, angleOfInwardNormalVectors1, angleOfNormalVectors2, polygonVertices);
+    GetOppositeAngles(angleOfNormalVectors1, angleOfInwardNormalVectors1);
+
+    if (!polygonShapesVec.empty())
+    {
+        MergeAngleOfNormalVectors(polygonShapesVec, angleOfInwardNormalVectors1, angleOfNormalVectors2, sortedPolygonVertices);
+    }
+    else
+    {
+        MergeAngleOfNormalVectors(manualPolygonShapesVec, angleOfInwardNormalVectors1, angleOfNormalVectors2, sortedPolygonVertices);
+    }
 
 #ifdef DEBUG
-    for (uint32_t i = 0; i < polygonVertices.size(); ++i)
+    for (uint32_t i = 0; i < sortedPolygonVertices.size(); ++i)
     {
-        cout << "Point: " << polygonVertices[i].vertex.x << ", " << polygonVertices[i].vertex.y << endl;
-        cout << "Angle: " << polygonVertices[i].normalAngle << endl;
-        cout << "Type: " << polygonVertices[i].polygonType << endl;
+        cout << "Point: " << sortedPolygonVertices[i].vertex.x << ", " << sortedPolygonVertices[i].vertex.y << endl;
+        cout << "Angle: " << sortedPolygonVertices[i].normalAngle << endl;
+        cout << "Type: " << sortedPolygonVertices[i].polygonType << endl;
     }
 #endif
 
     /* Calculate Minkowski difference of polygons */
-    MinkowskiDifference(polygonVertices, minkowskiVertices);
+    MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
     minkowskiShape.setPointCount(minkowskiVertices.size());
     minkowskiShape.setPosition(OriginX, OriginY);
 
@@ -99,8 +152,16 @@ int32_t main(int argc, char *argv[])
 
         window.draw(yAxis, 2, sf::Lines);
         window.draw(xAxis, 2, sf::Lines);
-        window.draw(vecShapes[0]);
-        window.draw(vecShapes[1]);
+        if (polygonShapesVec.size() == 2)
+        {
+            window.draw(polygonShapesVec[0]);
+            window.draw(polygonShapesVec[1]);
+        }
+        else
+        {
+            window.draw(manualPolygonShapesVec[0]);
+            window.draw(manualPolygonShapesVec[1]);
+        }
         window.draw(minkowskiShape);
 
         for (uint32_t i = 0; i < normalVectors1.size(); ++i)

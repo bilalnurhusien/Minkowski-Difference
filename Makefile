@@ -6,8 +6,8 @@ CXXFLAGS = -std=c++11
 CXX = g++
 LIBS =  -lsfml-graphics -lsfml-window -lsfml-system
 
-assign1:${OBJS}
+minkowski:${OBJS}
 	${CXX} ${CXXFLAGS} -o $@ ${OBJS} ${LIBS}
 
 clean:
-	-rm -f ${SRC}/*.o assign1
+	-rm -f ${SRC}/*.o minkowski

@@ -15,7 +15,8 @@ void PrintHelp();
   */
 bool ProcessArguments(int argc,
                       char* argvp[],
-                      std::vector<sf::CircleShape>& vecShapes);
+                      std::vector<sf::CircleShape>& polygonShapes,
+                      std::vector<sf::ConvexShape>& manualPolygonShapes);
                       
 /**
   * Get opposite angles (180 deg rotation of an angle)
@@ -26,6 +27,12 @@ void GetOppositeAngles(const std::vector<float>& angles,
 /**
   * Get normal vectors of all edges in a polygon
   */
+void GetNormalVectors(const sf::ConvexShape& shape,
+                      const float offsetX,
+                      const float offsetY,
+                      const sf::Color color,
+                      std::vector<std::vector<sf::Vertex> >& normalVectors,
+                      bool outwardNormal = true);
 void GetNormalVectors(const sf::CircleShape& shape,
                       const float offsetX,
                       const float offsetY,
@@ -42,7 +49,11 @@ bool GetAngleOfNormalVectors(const std::vector<std::vector<sf::Vertex> >& normal
 /**
  * Combine list of normal vectors
  */
-void MergeAngleOfNormalVectors(const std::vector<sf::CircleShape> vecShapes,
+void MergeAngleOfNormalVectors(const std::vector<sf::ConvexShape>& vecShapes,
+                               const std::vector<float>& angleOfNormalVectors1,
+                               const std::vector<float>& angleOfNormalVectors2,
+                               std::vector<PolygonVertex>& polygonVertices);
+void MergeAngleOfNormalVectors(const std::vector<sf::CircleShape>& vecShapes,
                                const std::vector<float>& angleOfNormalVectors1,
                                const std::vector<float>& angleOfNormalVectors2,
                                std::vector<PolygonVertex>& polygonVertices);

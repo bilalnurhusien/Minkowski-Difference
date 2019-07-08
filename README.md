@@ -1,7 +1,14 @@
 
 Usage:
 	
-	$ ./assign1 <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+	$ ./minkowski
+
+Usage:
+	./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+Example:
+	./minkowski 6 5 # For a hexagon and a pentagon
+
+	./minkowski -f <input-file> # CSV input file
 
 Library Installation:
 
@@ -12,12 +19,12 @@ Output:
 	Minkowski sum
 
 	# For two pentagons
-	$ ./assign1 5 5 
+	$ ./minkowski 5 5 
 
 ![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumPentagon.png)
 
 	# For a hexagon and a square
-	$ ./assign1 6 4 
+	$ ./minkowski 6 4 
 
 ![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumSquareHexagon.png)
 
