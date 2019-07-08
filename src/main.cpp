@@ -8,7 +8,7 @@ using namespace std;
 
 int32_t main(int argc, char *argv[])
 {
-    sf::RenderWindow window(sf::VideoMode(WindowSizeX, WindowSizeY), "Assignment 1");
+    sf::RenderWindow window(sf::VideoMode(WindowSizeX, WindowSizeY), "Assignment 1 : Minkowski Difference");
 
     sf::ConvexShape minkowskiShape;
     vector<sf::CircleShape> vecShapes;
