@@ -16,8 +16,8 @@ Output:
 
 ![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumPentagon.png)
 
-	# For a hexagon and a pentagon
-	$ ./assign1 6 5 
+	# For a hexagon and a square
+	$ ./assign1 6 4 
 
 ![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiSumSquareHexagon.png)
 
