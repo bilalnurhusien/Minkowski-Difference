@@ -18,8 +18,8 @@ int32_t main(int argc, char *argv[])
     vector<float> angleOfNormalVectors1;
     vector<float> angleOfInwardNormalVectors1;
     vector<float> angleOfNormalVectors2;
-    vector<PolygonEdge> minkowskiVertices;
-    vector<PolygonEdge> polygonEdges;
+    vector<PolygonVertex> minkowskiVertices;
+    vector<PolygonVertex> polygonVertices;
 
     /* Process arguments */
     if (!ProcessArguments(argc, argv, vecShapes))
@@ -37,19 +37,19 @@ int32_t main(int argc, char *argv[])
     GetAngleOfNormalVectors(normalVectors1, angleOfNormalVectors1);
     GetAngleOfNormalVectors(normalVectors2, angleOfNormalVectors2);
     GetOppositeAngles(angleOfNormalVectors1, angleOfInwardNormalVectors1);  
-    MergeAngleOfNormalVectors(vecShapes, angleOfInwardNormalVectors1, angleOfNormalVectors2, polygonEdges);
+    MergeAngleOfNormalVectors(vecShapes, angleOfInwardNormalVectors1, angleOfNormalVectors2, polygonVertices);
 
 #ifdef DEBUG
-    for (uint32_t i = 0; i < polygonEdges.size(); ++i)
+    for (uint32_t i = 0; i < polygonVertices.size(); ++i)
     {
-        cout << "Point: " << polygonEdges[i].vertex.x << ", " << polygonEdges[i].vertex.y << endl;
-        cout << "Angle: " << polygonEdges[i].normalAngle << endl;
-        cout << "Type: " << polygonEdges[i].polygonType << endl;
+        cout << "Point: " << polygonVertices[i].vertex.x << ", " << polygonVertices[i].vertex.y << endl;
+        cout << "Angle: " << polygonVertices[i].normalAngle << endl;
+        cout << "Type: " << polygonVertices[i].polygonType << endl;
     }
 #endif
 
-    /* Calculate Minkowski Sum of edges */
-    MinkowskiSum(polygonEdges, minkowskiVertices);
+    /* Calculate Minkowski difference of polygons */
+    MinkowskiDifference(polygonVertices, minkowskiVertices);
     minkowskiShape.setPointCount(minkowskiVertices.size());
     minkowskiShape.setPosition(OriginX, OriginY);
 

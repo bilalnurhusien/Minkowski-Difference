@@ -60,21 +60,21 @@ enum PolygonType
 };
 
 /**
- * Struct that represents a polygon edge
+ * Struct that represents a polygon vertex
  */
-struct PolygonEdge
+struct PolygonVertex
 {
     /* Polygon type */
     PolygonType polygonType;
 
-    /* Vertex associated with edge */
+    /* Vertex */
     sf::Vector2f vertex;
     
-    /* Angle normal to edge */
+    /* Normal angle associated with vertex */
     float normalAngle;
     
-    /* Used to sort normal angles of edges */
-    static bool CompAngles(const PolygonEdge& p1, const PolygonEdge& p2)
+    /* Used to sort normal angles */
+    static bool CompAngles(const PolygonVertex& p1, const PolygonVertex& p2)
     {
         return p1.normalAngle < p2.normalAngle;
     }

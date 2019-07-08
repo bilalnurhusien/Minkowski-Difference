@@ -221,7 +221,7 @@ bool GetAngleOfNormalVectors(const vector<vector<sf::Vertex> >& normalVectors,
 void MergeAngleOfNormalVectors(const vector<sf::CircleShape> vecShapes,
                                const vector<float>& angleOfNormalVectors1,
                                const vector<float>& angleOfNormalVectors2,
-                               vector<PolygonEdge>& polygonEdges)
+                               vector<PolygonVertex>& polygonVertices)
 {
     size_t vertexCount1 = vecShapes[0].getPointCount();
     size_t vertexCount2 = vecShapes[1].getPointCount();
@@ -231,23 +231,23 @@ void MergeAngleOfNormalVectors(const vector<sf::CircleShape> vecShapes,
     
     while (i < angleOfNormalVectors1.size())
     {       
-        PolygonEdge polygonEdge;
-        polygonEdge.normalAngle = angleOfNormalVectors1[i];
-        polygonEdge.vertex = vecShapes[0].getPoint(i);
-        polygonEdge.polygonType = PolygonType::Robot;
-        polygonEdges.push_back(polygonEdge);
+        PolygonVertex polygonVertex;
+        polygonVertex.normalAngle = angleOfNormalVectors1[i];
+        polygonVertex.vertex = vecShapes[0].getPoint(i);
+        polygonVertex.polygonType = PolygonType::Robot;
+        polygonVertices.push_back(polygonVertex);
         ++i;
     }
 
     while (j < angleOfNormalVectors2.size())
     {       
-        PolygonEdge polygonEdge;
-        polygonEdge.normalAngle = angleOfNormalVectors2[j];
-        polygonEdge.vertex = vecShapes[1].getPoint(j);
-        polygonEdge.polygonType = PolygonType::Obstacle;
-        polygonEdges.push_back(polygonEdge);
+        PolygonVertex polygonVertex;
+        polygonVertex.normalAngle = angleOfNormalVectors2[j];
+        polygonVertex.vertex = vecShapes[1].getPoint(j);
+        polygonVertex.polygonType = PolygonType::Obstacle;
+        polygonVertices.push_back(polygonVertex);
         ++j;
     }
     
-    sort(polygonEdges.begin(), polygonEdges.end(), PolygonEdge::CompAngles);
+    sort(polygonVertices.begin(), polygonVertices.end(), PolygonVertex::CompAngles);
 }

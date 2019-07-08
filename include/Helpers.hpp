@@ -45,7 +45,7 @@ bool GetAngleOfNormalVectors(const std::vector<std::vector<sf::Vertex> >& normal
 void MergeAngleOfNormalVectors(const std::vector<sf::CircleShape> vecShapes,
                                const std::vector<float>& angleOfNormalVectors1,
                                const std::vector<float>& angleOfNormalVectors2,
-                               std::vector<PolygonEdge>& polygonEdges);
+                               std::vector<PolygonVertex>& polygonVertices);
 
 /**
  * Return a string with a limit number of decimal places of a float or double

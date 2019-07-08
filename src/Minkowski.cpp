@@ -43,15 +43,15 @@ cout << "Distance BtoTarget " << distanceBtoTarget << endl;
 /**
  * Get next polygon point that is before or after a point
  * on the unit circle. This is used to calculate the Minkowski
- * Sum of two polygons.
+ * difference of two polygons.
  */
 bool GetNextPolygonPoint(const uint32_t index,
                          const bool before,
                          const PolygonType nextType,
-                         const vector<PolygonEdge>& polygonEdges,
-                         PolygonEdge& nextPoint)
+                         const vector<PolygonVertex>& polygonVertices,
+                         PolygonVertex& nextPoint)
 {
-    const int32_t VertexCount = polygonEdges.size();
+    const int32_t VertexCount = polygonVertices.size();
     int32_t i = index;
     
     do
@@ -59,103 +59,105 @@ bool GetNextPolygonPoint(const uint32_t index,
         if (before)
         {
             i = (i - 1 + VertexCount) % VertexCount;
-    #ifdef DEBUG
-            cout << "Is next polygon angle: " << polygonEdges[i].normalAngle << " type: " << polygonEdges[i].polygonType << " before " << polygonEdges[index].normalAngle <<  endl;
-    #endif
+#ifdef DEBUG
+            cout << "Is next polygon angle: " << polygonVertices[i].normalAngle << " type: " << polygonVertices[i].polygonType << " before " << polygonVertices[index].normalAngle <<  endl;
+#endif
         }
         else
         {
             i = (i + 1) % VertexCount;
-    #ifdef DEBUG
-            cout << "Is next polygon angle: " << polygonEdges[i].normalAngle << " type: " << polygonEdges[i].polygonType << " after " << polygonEdges[index].normalAngle <<  endl;
-    #endif
+#ifdef DEBUG
+            cout << "Is next polygon angle: " << polygonVertices[i].normalAngle << " type: " << polygonVertices[i].polygonType << " after " << polygonVertices[index].normalAngle <<  endl;
+#endif
         }
 
-        if (polygonEdges[i].polygonType == nextType)
+        if (polygonVertices[i].polygonType == nextType)
         {
-            nextPoint = polygonEdges[i];
+            nextPoint = polygonVertices[i];
 
             return true;
         }
     } while ((i != index) &&
-             (Distance(polygonEdges[i].normalAngle, polygonEdges[index].normalAngle) < 180.0f));
+             (Distance(polygonVertices[i].normalAngle, polygonVertices[index].normalAngle) < 180.0f));
+
     return false;
 }
 
 /**
- * Calculate the Minkowksi sum using a list of polygon edges
+ * Calculate the Minkowksi difference using a list of polygon vertices
  */
-bool MinkowskiSum(const vector<PolygonEdge>& polygonEdges,
-                  vector<PolygonEdge>& minkowskiVertices)
+bool MinkowskiDifference(const vector<PolygonVertex>& polygonVertices,
+                         vector<PolygonVertex>& minkowskiVertices)
 {       
-    uint32_t vertexCount = polygonEdges.size();
+    uint32_t vertexCount = polygonVertices.size();
 
     for (int32_t i = 0; i < vertexCount; ++i)
     {
-        PolygonEdge edgeBefore;
-        PolygonEdge edgeAfter;
-        PolygonEdge polygonEdge = polygonEdges[i];
+        PolygonVertex vertexBefore;
+        PolygonVertex vertexAfter;
+        PolygonVertex polygonVertex = polygonVertices[i];
         PolygonType nextPolygonType;
         
-        if (polygonEdge.polygonType == PolygonType::Robot)
+        if (polygonVertex.polygonType == PolygonType::Robot)
         {
             nextPolygonType = PolygonType::Obstacle;
         }
-        else if (polygonEdge.polygonType == PolygonType::Obstacle)
+        else if (polygonVertex.polygonType == PolygonType::Obstacle)
         {
             nextPolygonType = PolygonType::Robot;
         }
 
 #ifdef DEBUG
         cout << endl << "============== Test: =================== " << i <<  endl;
-        cout << "polygontype: " << polygonEdge.polygonType << " polygonangle: " << polygonEdge.normalAngle << endl;
-        cout << "polygonx: " << polygonEdge.vertex.x << " polygony: " << polygonEdge.vertex.y << endl;  
+        cout << "polygonVertexType: " << polygonVertex.polygonType << " polygonVertexAngle: " << polygonVertex.normalAngle << endl;
+        cout << "polygonVertexX: " << polygonVertex.vertex.x << " polygonVertexY: " << polygonVertex.vertex.y << endl;  
 #endif
 
-        if (!GetNextPolygonPoint(i, true, nextPolygonType, polygonEdges, edgeBefore))
+        if (!GetNextPolygonPoint(i, true, nextPolygonType, polygonVertices, vertexBefore))
         {
             continue;
         }
  
 #ifdef DEBUG
-        cout << "edgeBeforetype: " << edgeBefore.polygonType << " edgeBeforeangle: " << edgeBefore.normalAngle << endl;
-        cout << "edgeBeforex: " << edgeBefore.vertex.x << " edgeBeforey: " << edgeBefore.vertex.y << endl;
+        cout << "vertexBeforeType: " << vertexBefore.polygonType << " vertexBeforeAngle: " << vertexBefore.normalAngle << endl;
+        cout << "vertexBeforeX: " << vertexBefore.vertex.x << " vertexBeforeY: " << vertexBefore.vertex.y << endl;
 #endif
       
-        if (!GetNextPolygonPoint(i, false, nextPolygonType, polygonEdges, edgeAfter))
+        if (!GetNextPolygonPoint(i, false, nextPolygonType, polygonVertices, vertexAfter))
         {
             continue;
         }
 
 #ifdef DEBUG
-        cout << "aftertype: " << edgeAfter.polygonType << " afterangle: " << edgeAfter.normalAngle << endl;
-        cout << "afterx: " << edgeAfter.vertex.x << " aftery: " << edgeAfter.vertex.y << endl;
+        cout << "vertexAfterType: " << vertexAfter.polygonType << " vertexAfterAngle: " << vertexAfter.normalAngle << endl;
+        cout << "vertexAfterx: " << vertexAfter.vertex.x << " vertexAfterY: " << vertexAfter.vertex.y << endl;
 #endif
 
-        if (IsAngleBetween(edgeBefore.normalAngle, edgeAfter.normalAngle, polygonEdge.normalAngle))
+        if (IsAngleBetween(vertexBefore.normalAngle, vertexAfter.normalAngle, polygonVertex.normalAngle))
         {
-            if (!GetNextPolygonPoint(i, false, polygonEdge.polygonType, polygonEdges, polygonEdge))
+            if (!GetNextPolygonPoint(i, false, polygonVertex.polygonType, polygonVertices, polygonVertex))
             {
                 continue;
             }
 
 #ifdef DEBUG
         cout << endl << "============== Found: =================== " << i <<  endl;
-        cout << "polygontype: " << polygonEdge.polygonType << " polygonangle: " << polygonEdge.normalAngle << endl;
-        cout << "polygonx: " << polygonEdge.vertex.x << " polygony: " << polygonEdge.vertex.y << endl;
+        cout << "polygonVertexType: " << polygonVertex.polygonType << " polygonVertexAngle: " << polygonVertex.normalAngle << endl;
+        cout << "polygonVertexX: " << polygonVertex.vertex.x << " polygonVertexY: " << polygonVertex.vertex.y << endl;  
 #endif
-            PolygonEdge minkowskiVertex;
+
+            PolygonVertex minkowskiVertex;
             float x, y;
 
-            if (edgeAfter.polygonType == PolygonType::Obstacle)
+            if (vertexAfter.polygonType == PolygonType::Obstacle)
             {
-                x = edgeAfter.vertex.x - polygonEdge.vertex.x;
-                y = edgeAfter.vertex.y - polygonEdge.vertex.y;
+                x = vertexAfter.vertex.x - polygonVertex.vertex.x;
+                y = vertexAfter.vertex.y - polygonVertex.vertex.y;
             }
             else
             {
-                x = polygonEdge.vertex.x - edgeAfter.vertex.x;
-                y = polygonEdge.vertex.y - edgeAfter.vertex.y;
+                x = polygonVertex.vertex.x - vertexAfter.vertex.x;
+                y = polygonVertex.vertex.y - vertexAfter.vertex.y;
             }
 
             minkowskiVertex.vertex = sf::Vector2f(x, y);
@@ -166,8 +168,9 @@ bool MinkowskiSum(const vector<PolygonEdge>& polygonEdges,
             cout << "New Polygon Point: " << x << " y: " << y << endl;
             cout << "Angle: " << minkowskiVertex.normalAngle << endl;
 #endif
+
         }
     }
     
-    sort(minkowskiVertices.begin(), minkowskiVertices.end(), PolygonEdge::CompAngles);
+    sort(minkowskiVertices.begin(), minkowskiVertices.end(), PolygonVertex::CompAngles);
 }

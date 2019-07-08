@@ -3,7 +3,7 @@
 #include "Types.hpp"
 
 /**
- * Calculate the Minkowksi sum using a list of polygon edges
+ * Calculate the Minkowksi difference using a list of polygon vertices
  */
-bool MinkowskiSum(const std::vector<PolygonEdge>& polygonEdges,
-                  std::vector<PolygonEdge>& minkowskiVertices);
+bool MinkowskiDifference(const std::vector<PolygonVertex>& polygonVertices,
+                         std::vector<PolygonVertex>& minkowskiVertices);
