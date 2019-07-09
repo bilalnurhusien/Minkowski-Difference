@@ -105,6 +105,7 @@ int32_t main(int argc, char *argv[])
     MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
     minkowskiShape.setPointCount(minkowskiVertices.size());
     minkowskiShape.setPosition(OriginX, OriginY);
+    minkowskiShape.setFillColor(sf::Color::Cyan);
 
     for (uint32_t i = 0; i < minkowskiVertices.size(); ++i)
     {
@@ -177,7 +178,11 @@ int32_t main(int argc, char *argv[])
             window.draw(manualPolygonShapesVec[1]);
             window.draw(text);
         }
+
         window.draw(minkowskiShape);
+        text.setString("C-Obstacle");
+        text.setPosition(minkowskiShape.getPosition().x, minkowskiShape.getPosition().y);
+        window.draw(text);
 
         for (uint32_t i = 0; i < normalVectors1.size(); ++i)
         {
