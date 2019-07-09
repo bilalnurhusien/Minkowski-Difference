@@ -154,13 +154,28 @@ int32_t main(int argc, char *argv[])
         window.draw(xAxis, 2, sf::Lines);
         if (polygonShapesVec.size() == 2)
         {
+            text.setString("Robot");
+            text.setPosition(polygonShapesVec[0].getPosition().x, polygonShapesVec[0].getPosition().y);
             window.draw(polygonShapesVec[0]);
+            window.draw(text);
+
+            text.setString("Obstacle");
+            text.setPosition(polygonShapesVec[1].getPosition().x, polygonShapesVec[1].getPosition().y);
             window.draw(polygonShapesVec[1]);
+            window.draw(text);
         }
         else
         {
+
+            text.setString("Robot");
+            text.setPosition(manualPolygonShapesVec[0].getPosition().x, manualPolygonShapesVec[0].getPosition().y);
             window.draw(manualPolygonShapesVec[0]);
+            window.draw(text);
+
+            text.setString("Obstacle");
+            text.setPosition(manualPolygonShapesVec[1].getPosition().x, manualPolygonShapesVec[1].getPosition().y);
             window.draw(manualPolygonShapesVec[1]);
+            window.draw(text);
         }
         window.draw(minkowskiShape);
 
