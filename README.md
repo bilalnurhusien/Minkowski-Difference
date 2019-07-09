@@ -1,12 +1,8 @@
 
 Usage:
-	
-	$ ./minkowski
-
-Usage:
-	./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
 Example:
-	./minkowski 6 5 # For a hexagon and a pentagon
+	$./minkowski 6 5 # For a hexagon and a pentagon
 
 	./minkowski -f <input-file> # CSV input file
 
