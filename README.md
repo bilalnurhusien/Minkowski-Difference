@@ -1,4 +1,8 @@
 
+Build:
+	
+	$ make
+
 Usage:
 
 	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
