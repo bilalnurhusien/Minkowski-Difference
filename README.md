@@ -6,12 +6,13 @@ Build:
 Usage:
 
 	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+	$ ./minkowski -f <input-file> # CSV input file
 	
 Example:
 
 	$./minkowski 6 5 # For a hexagon and a pentagon
 
-	$./minkowski -f <input-file> # CSV input file
+	$./minkowski -f inputDataExample.txt
 
 Library Installation:
 
