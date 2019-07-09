@@ -5,8 +5,13 @@ Build:
 
 Usage:
 
+	Draw polygons with certain number of vertices:
+
 	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
-	$ ./minkowski -f <input-file> # CSV input file
+	
+	Use CSV input file to draw polygons:
+	
+	$ ./minkowski -f <input-file>
 	
 Example:
 
