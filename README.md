@@ -7,7 +7,7 @@ Example:
 
 	$./minkowski 6 5 # For a hexagon and a pentagon
 
-	./minkowski -f <input-file> # CSV input file
+	$./minkowski -f <input-file> # CSV input file
 
 Library Installation:
 
