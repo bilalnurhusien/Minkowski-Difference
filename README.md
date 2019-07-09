@@ -27,19 +27,19 @@ Library Installation:
 
 Output: 
 
-	Minkowski sum
+	Minkowski difference
 
 	# For two pentagons
 	$ ./minkowski 5 5 
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffPentagon.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
 
 	# For a hexagon and a square
 	$ ./minkowski 6 4 
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffSquareHexagon.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
 
         # For input file
         $ ./minkowski -f inputDataExample.txt
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffInputExample.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffInputExample.png)
