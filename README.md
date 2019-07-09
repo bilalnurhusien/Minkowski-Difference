@@ -1,14 +1,23 @@
 
-Usage:
+Build:
 	
-	$ ./minkowski
+	$ make
 
 Usage:
-	./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
-Example:
-	./minkowski 6 5 # For a hexagon and a pentagon
 
-	./minkowski -f <input-file> # CSV input file
+	Draw polygons with certain number of vertices:
+
+	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+	
+	Use CSV input file to draw polygons:
+	
+	$ ./minkowski -f <input-file>
+	
+Example:
+
+	$./minkowski 6 5 # For a hexagon and a pentagon
+
+	$./minkowski -f inputDataExample.txt
 
 Library Installation:
 
@@ -18,19 +27,19 @@ Library Installation:
 
 Output: 
 
-	Minkowski sum
+	Minkowski difference
 
 	# For two pentagons
 	$ ./minkowski 5 5 
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffPentagon.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
 
 	# For a hexagon and a square
 	$ ./minkowski 6 4 
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffSquareHexagon.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
 
         # For input file
         $ ./minkowski -f inputDataExample.txt
 
-![alt text](https://github.com/bilalnurhusien/MinkowskiSum/blob/master/images/MinkowskiDiffInputExample.png)
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffInputExample.png)
