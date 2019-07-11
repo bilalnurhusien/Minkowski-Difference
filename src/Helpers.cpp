@@ -77,7 +77,7 @@ bool ReadFile(string fileName,
     }
 
     manualPolygonShapes[0].setPosition(OffSetX1, OffSetY1);
-    manualPolygonShapes[0].setFillColor(sf::Color::Yellow);
+    manualPolygonShapes[0].setFillColor(sf::Color::Green);
 
     manualPolygonShapes[1].setPosition(OffSetX2, OffSetY2);
     manualPolygonShapes[1].setFillColor(sf::Color::Blue);
@@ -138,7 +138,7 @@ bool ProcessArguments(int argc,
     }
 
     sf::CircleShape polygon1(ShapeSize, vertexNum1);
-    polygon1.setFillColor(sf::Color::Yellow);
+    polygon1.setFillColor(sf::Color::Green);
     polygon1.setPosition(OffSetX1, OffSetY1);
 
     sf::CircleShape polygon2(ShapeSize, vertexNum2);

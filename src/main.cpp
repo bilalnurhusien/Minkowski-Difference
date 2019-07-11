@@ -105,12 +105,12 @@ int32_t main(int argc, char *argv[])
     MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
     minkowskiShape.setPointCount(minkowskiVertices.size());
     minkowskiShape.setPosition(OriginX, OriginY);
-    minkowskiShape.setFillColor(sf::Color::Cyan);
+    minkowskiShape.setFillColor(sf::Color::Red);
 
     for (uint32_t i = 0; i < minkowskiVertices.size(); ++i)
     {
-        cout << "Minkowski Vertex: " << minkowskiVertices[i].vertex.x << " " << minkowskiVertices[i].vertex.y << endl;
-        cout << "Minkowski Angle: " << minkowskiVertices[i].normalAngle << endl;
+        cout << "Minkowski Vertex " << i << ":  " << minkowskiVertices[i].vertex.x << " " << minkowskiVertices[i].vertex.y << endl;
+        cout << "Minkowski Angle " << i << ":  " << minkowskiVertices[i].normalAngle << endl << endl;
         minkowskiShape.setPoint(i, minkowskiVertices[i].vertex);
     }
 
@@ -136,9 +136,8 @@ int32_t main(int argc, char *argv[])
     }
 
     text.setFont(font);
-
-    /* In pixels, not points! */
     text.setCharacterSize(18); 
+    text.setColor(sf::Color::White);
 
     while (window.isOpen())
     {
@@ -153,15 +152,16 @@ int32_t main(int argc, char *argv[])
 
         window.draw(yAxis, 2, sf::Lines);
         window.draw(xAxis, 2, sf::Lines);
+
         if (polygonShapesVec.size() == 2)
         {
             text.setString("Robot");
-            text.setPosition(polygonShapesVec[0].getPosition().x, polygonShapesVec[0].getPosition().y);
+            text.setPosition(polygonShapesVec[0].getPosition().x + ShapeSize, polygonShapesVec[0].getPosition().y + ShapeSize);
             window.draw(polygonShapesVec[0]);
             window.draw(text);
 
             text.setString("Obstacle");
-            text.setPosition(polygonShapesVec[1].getPosition().x, polygonShapesVec[1].getPosition().y);
+            text.setPosition(polygonShapesVec[1].getPosition().x + ShapeSize, polygonShapesVec[1].getPosition().y + ShapeSize);
             window.draw(polygonShapesVec[1]);
             window.draw(text);
         }
@@ -169,12 +169,12 @@ int32_t main(int argc, char *argv[])
         {
 
             text.setString("Robot");
-            text.setPosition(manualPolygonShapesVec[0].getPosition().x, manualPolygonShapesVec[0].getPosition().y);
+            text.setPosition(manualPolygonShapesVec[0].getPosition().x + ShapeSize, manualPolygonShapesVec[0].getPosition().y + ShapeSize);
             window.draw(manualPolygonShapesVec[0]);
             window.draw(text);
 
             text.setString("Obstacle");
-            text.setPosition(manualPolygonShapesVec[1].getPosition().x, manualPolygonShapesVec[1].getPosition().y);
+            text.setPosition(manualPolygonShapesVec[1].getPosition().x + ShapeSize, manualPolygonShapesVec[1].getPosition().y + ShapeSize);
             window.draw(manualPolygonShapesVec[1]);
             window.draw(text);
         }
