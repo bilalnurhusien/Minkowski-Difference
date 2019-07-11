@@ -7,7 +7,7 @@ Usage:
 
 	Draw polygons with certain number of vertices:
 
-	$ ./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>
+	$ ./minkowski <num-of-polygon1-vertices> <num-of-polygon2-vertices>
 	
 	Use CSV input file to draw polygons:
 	
