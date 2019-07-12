@@ -1,4 +1,3 @@
-# Define required macros here
 SHELL = /bin/sh
 SRC = src
 OBJS =  ${SRC}/main.o ${SRC}/Helpers.o ${SRC}/Minkowski.o

@@ -167,7 +167,6 @@ int32_t main(int argc, char *argv[])
         }
         else
         {
-
             text.setString("Robot");
             text.setPosition(manualPolygonShapesVec[0].getPosition().x + ShapeSize, manualPolygonShapesVec[0].getPosition().y + ShapeSize);
             window.draw(manualPolygonShapesVec[0]);
