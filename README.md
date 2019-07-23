@@ -19,8 +19,8 @@
 
 ## Examples: 
 
-#### Hexagon robot and a square obstacle:
-	$ ./minkowski 6 4 
+#### Square robot and a hexagon obstacle:
+	$ ./minkowski 4 6
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
 
