@@ -13,8 +13,10 @@
 	
 ## Example:
 
-	$./minkowski 6 5 # For a hexagon robot and a pentagon obstacle
+### For a hexagon robot and a pentagon obstacle
+	$./minkowski 6 5 
 
+### Input File
 	$./minkowski -f inputDataExample.txt
 
 ## Library Installation:
