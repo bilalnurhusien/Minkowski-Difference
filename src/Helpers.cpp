@@ -11,8 +11,8 @@ using namespace std;
 void PrintHelp()
 {
     cout << "Usage:" << endl;
-    cout << "\t./minkowski <num-of-polygon1-verticies> <num-of-polygon2-verticies>" << endl;
-    cout << "Example:\n\t./minkowski 6 5 # For a hexagon and a pentagon" << endl;
+    cout << "\t./minkowski <num-of-robot-vertices> <num-of-obstacle-vertices>" << endl;
+    cout << "Example:\n\t./minkowski 6 5 # For a hexagon robot and a pentagon obstacle" << endl;
     cout << "\n\t./minkowski -f <input-file> # CSV input file" << endl;
 }
 
