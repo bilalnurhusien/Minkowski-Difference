@@ -7,9 +7,7 @@
 
 	$ ./minkowski <num-of-robot-vertices> <num-of-obstacle-vertices>
 	
-	Use CSV input file to draw polygons:
-	
-	$ ./minkowski -f <input-file>
+	$ ./minkowski -f <csv-input-file>
 	
 ### Library Installation:
 
