@@ -5,7 +5,7 @@
 
 ## Usage:
 
-	$ ./minkowski <num-of-polygon1-vertices> <num-of-polygon2-vertices>
+	$ ./minkowski <num-of-robot-vertices> <num-of-polygon2-vertices>
 	
 	Use CSV input file to draw polygons:
 	
@@ -13,7 +13,7 @@
 	
 ## Example:
 
-	$./minkowski 6 5 # For a hexagon and a pentagon
+	$./minkowski 6 5 # For a hexagon robot and a pentagon obstacle
 
 	$./minkowski -f inputDataExample.txt
 
