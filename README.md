@@ -19,12 +19,12 @@
 
 ## Examples: 
 
-#### Two pentagons:
+#### Pentagon robot and pentagon obstacle:
 	$ ./minkowski 5 5 
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
 
-#### Hexagon and a square:
+#### Hexagon robot and a square obstacle:
 	$ ./minkowski 6 4 
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
