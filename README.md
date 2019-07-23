@@ -37,7 +37,7 @@
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
 
-        # For input file
+#### For input file
         $ ./minkowski -f inputDataExample.txt
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffInputExample.png)
