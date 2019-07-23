@@ -1,23 +1,23 @@
 
-## Build:
+### Build:
 	
 	$ make
 
-## Usage:
+### Usage:
 
-	$ ./minkowski <num-of-robot-vertices> <num-of-polygon2-vertices>
+	$ ./minkowski <num-of-robot-vertices> <num-of-obstacle-vertices>
 	
 	Use CSV input file to draw polygons:
 	
 	$ ./minkowski -f <input-file>
 	
-## Library Installation:
+### Library Installation:
 
 	For rendering images, please install SFML library.
 
 	$ sudo apt-get install libsfml-dev
 
-## Examples: 
+### Examples: 
 
 #### Square robot and a hexagon obstacle:
 	$ ./minkowski 4 6
