@@ -19,15 +19,15 @@
 
 ## Examples: 
 
-#### Pentagon robot and pentagon obstacle:
-	$ ./minkowski 5 5 
-
-![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
-
 #### Hexagon robot and a square obstacle:
 	$ ./minkowski 6 4 
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
+
+#### Pentagon robot and pentagon obstacle:
+	$ ./minkowski 5 5 
+
+![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
 
 #### Input file
         $ ./minkowski -f inputDataExample.txt
