@@ -27,12 +27,12 @@
 
 ## Output: 
 
-## For two pentagons
+#### For two pentagons
 	$ ./minkowski 5 5 
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffPentagon.png)
 
-## For a hexagon and a square
+#### For a hexagon and a square
 	$ ./minkowski 6 4 
 
 ![alt text](https://github.com/bilalnurhusien/Minkowski-Difference/blob/master/images/MinkowskiDiffSquareHexagon.png)
