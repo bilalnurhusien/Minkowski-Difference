@@ -6,7 +6,7 @@
 	
 ### Background:
 
-	Minkowski differences are used in motion planning of a robot among obstacles. It is used
+	Minkowski differences are used in motion planning for a robot among obstacles. It is used
 	for the computation of the configuration space, which is the set of all admissible positions
 	of the robot. 
 
