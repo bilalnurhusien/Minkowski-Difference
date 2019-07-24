@@ -1,7 +1,8 @@
 ### Description:
 	
-	The Minkowski difference is calculated for a pair of 2D polygons. 
-	The algorithm from Lozano-Perez [Lozano-Perez, 1983] is used.
+	The Minkowski difference is calculated for a pair of 2D polygons. The algorithm from
+	Lozano-Perez [Lozano-Perez, 1983] is used which has a complexity of O(m + n) where
+	m and n are the number of vertices of the robot and obstacle, respectively.	
 
 ### Build:
 	
