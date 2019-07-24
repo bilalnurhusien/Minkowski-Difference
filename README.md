@@ -1,3 +1,6 @@
+### Description:
+	
+	The Minkowski difference is calculated for a pair of 2D polygons. The algorithm from Lozano-Perez [Lozano-Perez, 1983] is used.
 
 ### Build:
 	
