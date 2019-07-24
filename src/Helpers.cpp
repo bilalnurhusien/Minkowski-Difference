@@ -106,8 +106,8 @@ bool ProcessArguments(int argc,
             return false;
         }
 
-        if ((!manualPolygonShapesVec.empty()) && 
-            (manualPolygonShapesVec.size() < 2))
+        if ((!manualPolygonShapes.empty()) && 
+            (manualPolygonShapes.size() < 2))
         {
             cout << "Invalid input file" << endl;
             return -1;
