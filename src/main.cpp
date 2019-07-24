@@ -13,14 +13,11 @@ int32_t main(int argc, char *argv[])
     sf::ConvexShape minkowskiShape;
     vector<sf::CircleShape> polygonShapesVec;
     vector<sf::ConvexShape> manualPolygonShapesVec;
-    vector<vector<sf::Vertex> > normalVectors1;
-    vector<vector<sf::Vertex> > inwardNormalVectors1;  
-    vector<vector<sf::Vertex> > normalVectors2;
-    vector<float> angleOfNormalVectors1;
-    vector<float> angleOfInwardNormalVectors1;
-    vector<float> angleOfNormalVectors2;
+    vector<float> angleOfNormalVectorsRobot;
+    vector<float> angleOfNormalVectorsObstacle;
+    vector<vector<sf::Vertex> > normalVectorsRobot;
+    vector<vector<sf::Vertex> > normalVectorsObstacle;
     vector<PolygonVertex> minkowskiVertices;
-    vector<PolygonVertex> sortedPolygonVertices;
 
     /* Process arguments */
     if (!ProcessArguments(argc, argv, polygonShapesVec, manualPolygonShapesVec))
@@ -28,81 +25,31 @@ int32_t main(int argc, char *argv[])
         return -1;
     }
 
-    if (manualPolygonShapesVec.empty() &&
-        polygonShapesVec.empty())
-    {
-        cout << "Failed to create polygons" << endl;
-
-        return -1;
-    }
-
-    if ((!manualPolygonShapesVec.empty()) && 
-        (manualPolygonShapesVec.size() < 2))
-    {
-        cout << "Invalid input file" << endl;
-        return -1;
-    }
-    
-#ifdef DEBUG
-    cout << "Manual " << manualPolygonShapesVec.size() << " Automatic " << polygonShapesVec.size() <<endl;
-    if (!manualPolygonShapesVec.empty())
-    {
-        for (uint32_t i = 0; i < manualPolygonShapesVec[0].getPointCount(); ++i)
-        {
-            sf::Vector2f vertex = manualPolygonShapesVec[0].getPoint(i);
-
-            cout << vertex.x << ", " << vertex.y << endl;
-        }
-
-        for (uint32_t i = 0; i < manualPolygonShapesVec[1].getPointCount(); ++i)
-        {
-            sf::Vector2f vertex = manualPolygonShapesVec[1].getPoint(i);
-
-            cout << vertex.x << ", " << vertex.y << endl;
-        }
-    }
-#endif
+    /* Calculate Minkowski difference of robot and obstacle */
 
     if (!polygonShapesVec.empty())
     {
-        /* Get normal vectors */
-        GetNormalVectors(polygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Red, normalVectors1);
-        GetNormalVectors(polygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectors1, false);
-        GetNormalVectors(polygonShapesVec[1], OffSetX2, OffSetY2, sf::Color::Green, normalVectors2);
+        MinkowskiDifference(
+            polygonShapesVec[0],
+            polygonShapesVec[1],
+            normalVectorsRobot,
+            normalVectorsObstacle,
+            angleOfNormalVectorsRobot,
+            angleOfNormalVectorsObstacle,
+            minkowskiVertices);
     }
     else
     {
-        /* Get normal vectors */
-        GetNormalVectors(manualPolygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Red, normalVectors1);
-        GetNormalVectors(manualPolygonShapesVec[0], OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectors1, false);
-        GetNormalVectors(manualPolygonShapesVec[1], OffSetX2, OffSetY2, sf::Color::Green, normalVectors2);
+        MinkowskiDifference(
+            manualPolygonShapesVec[0],
+            manualPolygonShapesVec[1],
+            normalVectorsRobot,
+            normalVectorsObstacle,
+            angleOfNormalVectorsRobot,
+            angleOfNormalVectorsObstacle,
+            minkowskiVertices);
     }
 
-    /* Get angle of normal vectors */
-    GetAngleOfNormalVectors(normalVectors1, angleOfNormalVectors1);
-    GetAngleOfNormalVectors(normalVectors2, angleOfNormalVectors2);
-    GetOppositeAngles(angleOfNormalVectors1, angleOfInwardNormalVectors1);
-
-    if (!polygonShapesVec.empty())
-    {
-        MergeAngleOfNormalVectors(polygonShapesVec, angleOfInwardNormalVectors1, angleOfNormalVectors2, sortedPolygonVertices);
-    }
-    else
-    {
-        MergeAngleOfNormalVectors(manualPolygonShapesVec, angleOfInwardNormalVectors1, angleOfNormalVectors2, sortedPolygonVertices);
-    }
-
-#ifdef DEBUG
-    for (uint32_t i = 0; i < sortedPolygonVertices.size(); ++i)
-    {
-        cout << "Point: " << sortedPolygonVertices[i].vertex.x << ", " << sortedPolygonVertices[i].vertex.y << endl;
-        cout << "Angle: " << sortedPolygonVertices[i].normalAngle << endl;
-        cout << "Type: " << sortedPolygonVertices[i].polygonType << endl;
-    }
-#endif
-
-    /* Calculate Minkowski difference of polygons */
-    MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
     minkowskiShape.setPointCount(minkowskiVertices.size());
     minkowskiShape.setPosition(OriginX, OriginY);
     minkowskiShape.setFillColor(sf::Color::Red);
@@ -147,9 +94,12 @@ int32_t main(int argc, char *argv[])
         {
             if ((event.type == sf::Event::Closed) ||
                 (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)))
+            {
                 window.close();
+            }
         }
 
+        /* Draw X and Y axes */
         window.draw(yAxis, 2, sf::Lines);
         window.draw(xAxis, 2, sf::Lines);
 
@@ -178,28 +128,30 @@ int32_t main(int argc, char *argv[])
             window.draw(text);
         }
 
+        /* Draw C-Obstacle */
         window.draw(minkowskiShape);
         text.setString("C-Obstacle");
         text.setPosition(minkowskiShape.getPosition().x, minkowskiShape.getPosition().y);
         window.draw(text);
 
-        for (uint32_t i = 0; i < normalVectors1.size(); ++i)
+        /* Draw normal vectors */
+        for (uint32_t i = 0; i < normalVectorsRobot.size(); ++i)
         {
-            sf::Vertex* normalVector = &(normalVectors1[i][0]);
+            sf::Vertex* normalVector = &(normalVectorsRobot[i][0]);
             window.draw(normalVector, 2, sf::Lines);
             
-            text.setString(ToStringSetPrecision(angleOfNormalVectors1[i], 2));
-            text.setPosition(normalVectors1[i][1].position.x, normalVectors1[i][1].position.y);
+            text.setString(ToStringSetPrecision(angleOfNormalVectorsRobot[i], 2));
+            text.setPosition(normalVectorsRobot[i][1].position.x, normalVectorsRobot[i][1].position.y);
             window.draw(text);
         }
 
-        for (uint32_t i = 0; i < normalVectors2.size(); ++i)
+        for (uint32_t i = 0; i < normalVectorsObstacle.size(); ++i)
         {
-            sf::Vertex* normalVector = &(normalVectors2[i][0]);
+            sf::Vertex* normalVector = &(normalVectorsObstacle[i][0]);
             window.draw(normalVector, 2, sf::Lines);
             
-            text.setString(ToStringSetPrecision(angleOfNormalVectors2[i], 2));
-            text.setPosition(normalVectors2[i][1].position.x, normalVectors2[i][1].position.y);
+            text.setString(ToStringSetPrecision(angleOfNormalVectorsObstacle[i], 2));
+            text.setPosition(normalVectorsObstacle[i][1].position.x, normalVectorsObstacle[i][1].position.y);
             window.draw(text);
         }
         

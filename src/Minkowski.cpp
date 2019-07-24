@@ -7,6 +7,7 @@
 
 #include "../include/Minkowski.hpp"
 #include "../include/Types.hpp"
+#include "../include/Helpers.hpp"
 
 using namespace std;
 
@@ -30,13 +31,6 @@ bool IsAngleBetween(float a, float b, float targetAngle)
     distanceAtoTarget = Distance(targetAngle, a);
     distanceBtoTarget = Distance(targetAngle, b);
 
-#ifdef DEBUG
-cout << "a : " << a  << " b: " << b << " targetAngle: " << targetAngle << endl;
-cout << "Distance AtoB " << distanceAtoB << endl;
-cout << "Distance AtoTarget " << distanceAtoTarget << endl;
-cout << "Distance BtoTarget " << distanceBtoTarget << endl;
-#endif
-
     return ((distanceAtoB < 180.0f) && ((distanceAtoTarget + distanceBtoTarget) <= distanceAtoB));
 }
 
@@ -59,16 +53,10 @@ bool GetNextPolygonPoint(const uint32_t index,
         if (before)
         {
             i = (i - 1 + VertexCount) % VertexCount;
-#ifdef DEBUG
-            cout << "Is next polygon angle: " << polygonVertices[i].normalAngle << " type: " << polygonVertices[i].polygonType << " before " << polygonVertices[index].normalAngle <<  endl;
-#endif
         }
         else
         {
             i = (i + 1) % VertexCount;
-#ifdef DEBUG
-            cout << "Is next polygon angle: " << polygonVertices[i].normalAngle << " type: " << polygonVertices[i].polygonType << " after " << polygonVertices[index].normalAngle <<  endl;
-#endif
         }
 
         if (polygonVertices[i].polygonType == nextType)
@@ -107,31 +95,15 @@ bool MinkowskiDifference(const vector<PolygonVertex>& polygonVertices,
             nextPolygonType = PolygonType::Robot;
         }
 
-#ifdef DEBUG
-        cout << endl << "============== Test: =================== " << i <<  endl;
-        cout << "polygonVertexType: " << polygonVertex.polygonType << " polygonVertexAngle: " << polygonVertex.normalAngle << endl;
-        cout << "polygonVertexX: " << polygonVertex.vertex.x << " polygonVertexY: " << polygonVertex.vertex.y << endl;  
-#endif
-
         if (!GetNextPolygonPoint(i, true, nextPolygonType, polygonVertices, vertexBefore))
         {
             continue;
         }
- 
-#ifdef DEBUG
-        cout << "vertexBeforeType: " << vertexBefore.polygonType << " vertexBeforeAngle: " << vertexBefore.normalAngle << endl;
-        cout << "vertexBeforeX: " << vertexBefore.vertex.x << " vertexBeforeY: " << vertexBefore.vertex.y << endl;
-#endif
-      
+       
         if (!GetNextPolygonPoint(i, false, nextPolygonType, polygonVertices, vertexAfter))
         {
             continue;
         }
-
-#ifdef DEBUG
-        cout << "vertexAfterType: " << vertexAfter.polygonType << " vertexAfterAngle: " << vertexAfter.normalAngle << endl;
-        cout << "vertexAfterx: " << vertexAfter.vertex.x << " vertexAfterY: " << vertexAfter.vertex.y << endl;
-#endif
 
         if (IsAngleBetween(vertexBefore.normalAngle, vertexAfter.normalAngle, polygonVertex.normalAngle))
         {
@@ -139,12 +111,6 @@ bool MinkowskiDifference(const vector<PolygonVertex>& polygonVertices,
             {
                 continue;
             }
-
-#ifdef DEBUG
-        cout << endl << "============== Found: =================== " << i <<  endl;
-        cout << "polygonVertexType: " << polygonVertex.polygonType << " polygonVertexAngle: " << polygonVertex.normalAngle << endl;
-        cout << "polygonVertexX: " << polygonVertex.vertex.x << " polygonVertexY: " << polygonVertex.vertex.y << endl;  
-#endif
 
             PolygonVertex minkowskiVertex;
             float x, y;
@@ -160,17 +126,114 @@ bool MinkowskiDifference(const vector<PolygonVertex>& polygonVertices,
                 y = polygonVertex.vertex.y - vertexAfter.vertex.y;
             }
 
+            /*
+             * 57.2957795f = 180 / PI
+             */
             minkowskiVertex.vertex = sf::Vector2f(x, y);
             minkowskiVertex.normalAngle = fmod(atan2(y, x) * 57.2957795f + 360.0f, 360.0f);
             minkowskiVertices.push_back(minkowskiVertex);            
-
-#ifdef DEBUG
-            cout << "New Polygon Point: " << x << " y: " << y << endl;
-            cout << "Angle: " << minkowskiVertex.normalAngle << endl;
-#endif
-
         }
     }
     
     sort(minkowskiVertices.begin(), minkowskiVertices.end(), PolygonVertex::CompAngles);
+}
+
+/**
+  * Get opposite angles (180 deg rotation of an angle)
+  */
+void GetOppositeAngles(const vector<float>& angles,
+                       vector<float>& oppositeAngles)
+{
+    for (uint32_t i = 0; i < angles.size(); ++i)
+    {
+        oppositeAngles.push_back(fmod(angles[i] + 180, 360.0f));
+    }
+}
+
+/*
+ * Get angle of normal vectors
+ */
+bool GetAngleOfNormalVectors(const vector<vector<sf::Vertex> >& normalVectors,
+                             vector<float>& angleOfNormalVectors)
+{
+    angleOfNormalVectors.clear();
+    for (uint32_t i  = 0; i < normalVectors.size(); ++i)
+    {
+        if (normalVectors[i].size() != 2)
+        {
+            cout << "Invalid number of vertices for normal vector";
+            return false;
+        }
+
+        float yDiff = (float)normalVectors[i][1].position.y - (float)normalVectors[i][0].position.y;
+        float xDiff = (float)normalVectors[i][1].position.x - (float)normalVectors[i][0].position.x;
+
+        /*
+         * 57.2957795f = 180 / PI
+         */
+        float angle = fmod(atan2(yDiff, xDiff) * 57.2957795f + 360.0f, 360.0f);
+
+        angleOfNormalVectors.push_back(angle);
+
+#ifdef DEBUG            
+        cout << "Angle of Normal: " << i << ": "<< angle << endl;
+#endif
+    }
+    
+    return true;
+}
+
+bool MinkowskiDifference(const sf::ConvexShape& robot,
+                         const sf::ConvexShape& obstacle,
+                         vector<vector<sf::Vertex> >& normalVectorsRobot,
+                         vector<vector<sf::Vertex> >& normalVectorsObstacle,
+                         vector<float>& angleOfNormalVectorsRobot,
+                         vector<float>& angleOfNormalVectorsObstacle,
+                         std::vector<PolygonVertex>& minkowskiVertices)
+{
+    vector<float> angleOfInwardNormalVectorsRobot;
+    vector<PolygonVertex> sortedPolygonVertices;
+    std::vector<vector<sf::Vertex> > inwardNormalVectorsRobot;
+    
+    /* Get normal vectors */
+    GetNormalVectors<sf::ConvexShape>(robot, OffSetX1, OffSetY1, sf::Color::Red, normalVectorsRobot);
+    GetNormalVectors<sf::ConvexShape>(robot, OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectorsRobot, false);
+    GetNormalVectors<sf::ConvexShape>(obstacle, OffSetX2, OffSetY2, sf::Color::Green, normalVectorsObstacle);
+    
+    /* Get angle of normal vectors */
+    GetAngleOfNormalVectors(normalVectorsRobot, angleOfNormalVectorsRobot);
+    GetAngleOfNormalVectors(normalVectorsObstacle, angleOfNormalVectorsObstacle);
+    GetOppositeAngles(angleOfNormalVectorsRobot, angleOfInwardNormalVectorsRobot);
+    
+    MergeAngleOfNormalVectors(robot, obstacle, angleOfInwardNormalVectorsRobot, angleOfNormalVectorsObstacle, sortedPolygonVertices);
+
+    return MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
+}
+
+
+bool MinkowskiDifference(const sf::CircleShape& robot,
+                         const sf::CircleShape& obstacle,
+                         vector<vector<sf::Vertex> >& normalVectorsRobot,
+                         vector<vector<sf::Vertex> >& normalVectorsObstacle,
+                         vector<float>& angleOfNormalVectorsRobot,
+                         vector<float>& angleOfNormalVectorsObstacle,
+                         std::vector<PolygonVertex>& minkowskiVertices)
+{
+    vector<float> angleOfInwardNormalVectorsRobot;
+    vector<PolygonVertex> sortedPolygonVertices;
+    std::vector<vector<sf::Vertex> > inwardNormalVectorsRobot;
+    
+    /* Get normal vectors */
+    GetNormalVectors<sf::CircleShape>(robot, OffSetX1, OffSetY1, sf::Color::Red, normalVectorsRobot);
+    GetNormalVectors<sf::CircleShape>(robot, OffSetX1, OffSetY1, sf::Color::Blue, inwardNormalVectorsRobot, false);
+    GetNormalVectors<sf::CircleShape>(obstacle, OffSetX2, OffSetY2, sf::Color::Green, normalVectorsObstacle);
+    
+    /* Get angle of normal vectors */
+    GetAngleOfNormalVectors(normalVectorsRobot, angleOfNormalVectorsRobot);
+    GetAngleOfNormalVectors(normalVectorsObstacle, angleOfNormalVectorsObstacle);
+    GetOppositeAngles(angleOfNormalVectorsRobot, angleOfInwardNormalVectorsRobot);
+    
+    MergeAngleOfNormalVectors(robot, obstacle, angleOfInwardNormalVectorsRobot, angleOfNormalVectorsObstacle, sortedPolygonVertices);
+
+    return MinkowskiDifference(sortedPolygonVertices, minkowskiVertices);
 }
