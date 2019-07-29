@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Types.hpp"
+
 #include <sstream>
 #include <string>
 #include <fstream>
+
+#include <SFML/Graphics.hpp>
 
 /**
   * Print help messages

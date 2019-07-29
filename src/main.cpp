@@ -18,6 +18,7 @@ int32_t main(int argc, char *argv[])
     vector<vector<sf::Vertex> > normalVectorsRobot;
     vector<vector<sf::Vertex> > normalVectorsObstacle;
     vector<PolygonVertex> minkowskiVertices;
+    bool displayPoints = false;
 
     /* Process arguments */
     if (!ProcessArguments(argc, argv, polygonShapesVec, manualPolygonShapesVec))
@@ -97,6 +98,13 @@ int32_t main(int argc, char *argv[])
             {
                 window.close();
             }
+            else if ((event.type == sf::Event::MouseButtonPressed) &&
+                     (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
+            {
+                displayPoints = !displayPoints;
+                window.clear();
+            }
+
         }
 
         /* Draw X and Y axes */
@@ -114,6 +122,25 @@ int32_t main(int argc, char *argv[])
             text.setPosition(polygonShapesVec[1].getPosition().x + ShapeSize, polygonShapesVec[1].getPosition().y + ShapeSize);
             window.draw(polygonShapesVec[1]);
             window.draw(text);
+
+            if (displayPoints)
+            {
+                /* Display points */
+                text.setCharacterSize(14);
+                for (uint32_t i = 0; i < 2; ++i)
+                {
+                    for (uint32_t j = 0; j  < polygonShapesVec[i].getPointCount(); ++j)
+                    {
+                        sf::Vector2f vertex = polygonShapesVec[i].getPoint(j);
+
+                        /* Write coordinates above each roadmap vertex */
+                        text.setPosition(polygonShapesVec[i].getPosition().x + vertex.x, polygonShapesVec[i].getPosition().y + vertex.y);
+                        text.setString("(" + ToStringSetPrecision(vertex.x, 1) + ", " + ToStringSetPrecision(vertex.y, 1) + ")");
+                        window.draw(text);
+                    }
+                }
+                text.setCharacterSize(18);
+            }
         }
         else
         {
@@ -126,6 +153,25 @@ int32_t main(int argc, char *argv[])
             text.setPosition(manualPolygonShapesVec[1].getPosition().x + ShapeSize, manualPolygonShapesVec[1].getPosition().y + ShapeSize);
             window.draw(manualPolygonShapesVec[1]);
             window.draw(text);
+    
+            if (displayPoints)
+            {
+                /* Display points */
+                text.setCharacterSize(14); 
+                for (uint32_t i = 0; i < 2; ++i)
+                {
+                    for (uint32_t j = 0; j  < manualPolygonShapesVec[i].getPointCount(); ++j)
+                    {
+                        sf::Vector2f vertex = manualPolygonShapesVec[i].getPoint(j);
+
+                        /* Write coordinates above each roadmap vertex */
+                        text.setPosition(manualPolygonShapesVec[i].getPosition().x + vertex.x, manualPolygonShapesVec[i].getPosition().y + vertex.y);
+                        text.setString("(" + ToStringSetPrecision(vertex.x, 1) + ", " + ToStringSetPrecision(vertex.y, 1) + ")");
+                        window.draw(text);
+                    }
+                }
+                text.setCharacterSize(18);
+            }
         }
 
         /* Draw C-Obstacle */
@@ -133,6 +179,24 @@ int32_t main(int argc, char *argv[])
         text.setString("C-Obstacle");
         text.setPosition(minkowskiShape.getPosition().x, minkowskiShape.getPosition().y);
         window.draw(text);
+
+        if (displayPoints)
+        {
+            /* Display points of C-Obstacle*/
+            text.setCharacterSize(14); 
+
+            for (uint32_t i = 0; i  < minkowskiShape.getPointCount(); ++i)
+            {
+                sf::Vector2f vertex = minkowskiShape.getPoint(i);
+
+                /* Write coordinates above each roadmap vertex */
+                text.setPosition(minkowskiShape.getPosition().x + vertex.x, minkowskiShape.getPosition().y + vertex.y);
+                text.setString("(" + ToStringSetPrecision(vertex.x, 1) + ", " + ToStringSetPrecision(vertex.y, 1) + ")");
+                window.draw(text);
+            }
+            
+            text.setCharacterSize(18);
+        }
 
         /* Draw normal vectors */
         for (uint32_t i = 0; i < normalVectorsRobot.size(); ++i)
